@@ -21,6 +21,7 @@ export default async (req, res) => {
 
   try {
     // Check if the image already exists on Cloudinary
+    console.log("aaa");
     const existingImage = await cloudinary.api.resource(fileName, { type: 'upload' });
     console.log(existingImage);
 
@@ -30,11 +31,12 @@ export default async (req, res) => {
       return generateResponseJson(domainName, imageUrl, res);
     }
   } catch (error) {
+    console.log("bb");
     if (error.http_code !== 404) {
       return res.status(500).json({ error: 'Internal Server Error' });
     }
   }
-
+  console.log("cc");
   // Generate new image
   const canvas = createCanvas(800, 200);
   const ctx = canvas.getContext('2d');
