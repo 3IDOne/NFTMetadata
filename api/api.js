@@ -10,19 +10,23 @@ cloudinary.config({
 
 export default async (req, res) => {
   const { name: domainName } = req.query;
+  console.log(domainName);
 
   if (!domainName) {
     return res.status(400).json({ error: 'Missing "name" query parameter' });
   }
 
   const fileName = `${domainName.replace(/[^a-zA-Z0-9]/g, '')}.png`;
+  console.log(fileName);
 
   try {
     // Check if the image already exists on Cloudinary
     const existingImage = await cloudinary.api.resource(fileName, { type: 'upload' });
+    console.log(existingImage);
 
     if (existingImage) {
       const imageUrl = existingImage.secure_url;
+      console.log(imageUrl);
       return generateResponseJson(domainName, imageUrl, res);
     }
   } catch (error) {
