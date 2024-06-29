@@ -8,6 +8,7 @@
     "typescript": "^4.7.3",
     "@google-cloud/storage": "^5.8.5",
     "canvas": "^2.8.0",
-    "axios": "^0.21.1"
+    "axios": "^0.21.1",
+    "cloudinary": "^2.17.3"
   }
 }
