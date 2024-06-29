@@ -18,7 +18,7 @@ export default async (req, res) => {
 
   const fileName = `${domainName.replace(/[^a-zA-Z0-9]/g, '')}.png`;
   console.log(fileName);
-
+/*
   try {
     // Check if the image already exists on Cloudinary
     console.log("aaa");
@@ -36,6 +36,7 @@ export default async (req, res) => {
       return res.status(500).json({ error: 'Internal Server Error' });
     }
   }
+  */
   console.log("cc");
   // Generate new image
   const canvas = createCanvas(800, 200);
