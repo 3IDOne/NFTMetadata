@@ -1,4 +1,4 @@
-const { createCanvas } = require('canvas');
+const { createCanvas, loadImage } = require('canvas');
 const { ethers } = require('ethers');
 const { WebSocketProvider } = require('ethers/providers');
 const bcimage = "./bc.png";
@@ -48,6 +48,8 @@ export default async (req, res) => {
   console.log("cc");
 
   async function generateImageWithText(subdomain, bcimage) {
+    console.log("dddd");
+
     const backgroundImage = await loadImage(bcimage);
     const canvas = createCanvas(backgroundImage.width, backgroundImage.height);
     const ctx = canvas.getContext('2d');
