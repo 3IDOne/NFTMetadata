@@ -84,7 +84,7 @@ export default async (req, res) => {
   );
   console.log("YYY");
   outputBuffer.pipe(result);
-};
+
 
 const generateResponseJson = (domainName, imageUrl, res) => {
   const response = {
@@ -109,4 +109,6 @@ const generateResponseJson = (domainName, imageUrl, res) => {
   };
 
   res.json(response);
+};
+
 };
