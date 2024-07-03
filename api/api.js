@@ -1,8 +1,10 @@
-const { createCanvas, loadImage } = require('canvas');
+const { createCanvas, loadImage, registerFont } = require('canvas');
 const { ethers } = require('ethers');
 const { WebSocketProvider } = require('ethers/providers');
 const path = require('path');
 const bcimage = path.resolve(__dirname, '../public/bc.png');
+registerFont(path.join(__dirname, '../public/Lato-Black.ttf'), { family: 'Lato' });
+
 
 
 const cloudinary = require('cloudinary').v2;
@@ -87,7 +89,7 @@ export default async (req, res) => {
     const canvas = createCanvas(backgroundImage.width, backgroundImage.height);
     const ctx = canvas.getContext('2d');
     ctx.drawImage(backgroundImage, 0, 0);
-    ctx.font = 'bold 30px sans-serif';
+    ctx.font = 'bold 30px Lato';
     ctx.fillStyle = 'white';
     ctx.textAlign = 'center';
   
