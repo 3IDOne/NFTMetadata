@@ -50,12 +50,13 @@ export default async (req, res) => {
   console.log("cc");
 
   async function generateImageWithText(subdomain, bcimage) {
-    console.log("dddd");
-
+    console.log("Starting image generation...");
+  
     const backgroundImage = await loadImage(bcimage);
+    console.log("Background image loaded");
+  
     const canvas = createCanvas(backgroundImage.width, backgroundImage.height);
     const ctx = canvas.getContext('2d');
-  
     ctx.drawImage(backgroundImage, 0, 0);
     ctx.font = 'bold 30px Arial';
     ctx.fillStyle = 'white';
@@ -64,26 +65,39 @@ export default async (req, res) => {
     const textY = canvas.height * 0.75;
     ctx.fillText(`Token ID: ${subdomain}`, canvas.width / 2, textY);
     const outputBuffer = canvas.toBuffer('image/png');
-    if (outputBuffer) console.log(`Image on Buffer`);
+    console.log("Image generated and in buffer");
+    
+    return outputBuffer;
   }
 
-  generateImageWithText("first", bcimage);
-  console.log("OOO");
-
-  // Upload the image to Cloudinary
-  const result = await cloudinary.uploader.upload_stream(
-    { public_id: fileName, resource_type: 'image' },
-    (error, result) => {
-      if (error) {
-        console.log("aaa");
-        return res.status(500).json({ error: 'Failed to upload image' });
-      }
-      console.log("UUU");
-      generateResponseJson(domainName, result.secure_url, res);
-    }
-  );
-  console.log("YYY");
-  outputBuffer.pipe(result);
+  try {
+    console.log("Generating image...");
+    const outputBuffer = await generateImageWithText(domainName, bcimage);
+    console.log("Image generation complete");
+  
+    // Upload the image to Cloudinary
+    const result = await new Promise((resolve, reject) => {
+      const uploadStream = cloudinary.uploader.upload_stream(
+        { public_id: fileName, resource_type: 'image' },
+        (error, result) => {
+          if (error) {
+            console.log("Failed to upload image");
+            reject(error);
+          } else {
+            console.log("Image uploaded successfully");
+            resolve(result);
+          }
+        }
+      );
+      uploadStream.end(outputBuffer);
+    });
+  
+    console.log("Generating response...");
+    generateResponseJson(domainName, result.secure_url, res);
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
 
 
 const generateResponseJson = (domainName, imageUrl, res) => {
