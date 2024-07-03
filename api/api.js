@@ -1,6 +1,6 @@
 const { createCanvas } = require('canvas');
-const axios = require('axios');
-const fs = require('fs');
+const { ethers } = require('ethers');
+const { WebSocketProvider } = require('ethers/providers');
 const bcimage = "./bc.png";
 
 const cloudinary = require('cloudinary').v2;
