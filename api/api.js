@@ -94,7 +94,7 @@ export default async (req, res) => {
     ctx.textAlign = 'center';
   
     const textY = canvas.height * 0.75;
-    ctx.fillText(`Token ID: ${subdomain}`, canvas.width / 2, textY);
+    ctx.fillText(`${subdomain}`, canvas.width / 2, textY);
     const outputBuffer = canvas.toBuffer('image/png');
     if (outputBuffer) {console.log("Image generated and in buffer");}
     
