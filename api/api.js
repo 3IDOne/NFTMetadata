@@ -1,7 +1,9 @@
 const { createCanvas, loadImage } = require('canvas');
 const { ethers } = require('ethers');
 const { WebSocketProvider } = require('ethers/providers');
-const bcimage = "./bc.png";
+const path = require('path');
+const bcimage = path.resolve(__dirname, '../public/bc.png');
+
 
 const cloudinary = require('cloudinary').v2;
 cloudinary.config({
