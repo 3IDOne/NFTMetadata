@@ -11,6 +11,7 @@ cloudinary.config({
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
+console.log(cloud_name,api_key,api_secret);
 
 export default async (req, res) => {
   const { name: domainName } = req.query;
@@ -53,7 +54,7 @@ export default async (req, res) => {
     console.log("Starting image generation...");
   
     const backgroundImage = await loadImage(bcimage);
-    console.log("Background image loaded");
+    if (backgroundImage) {console.log("Background image loaded");}
   
     const canvas = createCanvas(backgroundImage.width, backgroundImage.height);
     const ctx = canvas.getContext('2d');
@@ -65,7 +66,7 @@ export default async (req, res) => {
     const textY = canvas.height * 0.75;
     ctx.fillText(`Token ID: ${subdomain}`, canvas.width / 2, textY);
     const outputBuffer = canvas.toBuffer('image/png');
-    console.log("Image generated and in buffer");
+    if (outputBuffer) {console.log("Image generated and in buffer");}
     
     return outputBuffer;
   }
@@ -73,7 +74,7 @@ export default async (req, res) => {
   try {
     console.log("Generating image...");
     const outputBuffer = await generateImageWithText(domainName, bcimage);
-    console.log("Image generation complete");
+    if (outputBuffer) {console.log("Image generation complete");}
   
     // Upload the image to Cloudinary
     const result = await new Promise((resolve, reject) => {
