@@ -52,6 +52,32 @@ export default async (req, res) => {
   */
   console.log("cc");
 
+  const generateResponseJson = (domainName, imageUrl, res) => {
+    const response = {
+      is_normalized: true,
+      name: domainName,
+      image: imageUrl,
+      description: "3ID :: Web3 Identity for everyone! Find more info about this domain on its ENS page.",
+      attributes: [
+        {
+          trait_type: "Length",
+          display_type: "number",
+          value: domainName.length,
+        },
+        {
+          trait_type: "Data Type",
+          value: "Alphabets",
+        },
+      ],
+      name_length: domainName.length,
+      url: `https://app.ens.domains/name/${domainName}`,
+      version: 0,
+    };
+  
+    res.json(response);
+  };
+  
+
   async function generateImageWithText(subdomain, bcimage) {
     console.log("Starting image generation...");
   
@@ -101,31 +127,5 @@ export default async (req, res) => {
     console.error("Error:", error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
-
-
-const generateResponseJson = (domainName, imageUrl, res) => {
-  const response = {
-    is_normalized: true,
-    name: domainName,
-    image: imageUrl,
-    description: "3ID :: Web3 Identity for everyone! Find more info about this domain on its ENS page.",
-    attributes: [
-      {
-        trait_type: "Length",
-        display_type: "number",
-        value: domainName.length,
-      },
-      {
-        trait_type: "Data Type",
-        value: "Alphabets",
-      },
-    ],
-    name_length: domainName.length,
-    url: `https://app.ens.domains/name/${domainName}`,
-    version: 0,
-  };
-
-  res.json(response);
-};
 
 };
