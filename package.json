@@ -9,6 +9,7 @@
     "@google-cloud/storage": "^5.8.5",
     "canvas": "^2.8.0",
     "axios": "^0.21.1",
-    "cloudinary": "^2.2.0"
+    "cloudinary": "^2.2.0",
+    "fontconfig": "^2.13.1"
   }
 }
