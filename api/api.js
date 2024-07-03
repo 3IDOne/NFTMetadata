@@ -76,7 +76,7 @@ export default async (req, res) => {
   
     res.json(response);
   };
-  
+
 
   async function generateImageWithText(subdomain, bcimage) {
     console.log("Starting image generation...");
@@ -87,7 +87,7 @@ export default async (req, res) => {
     const canvas = createCanvas(backgroundImage.width, backgroundImage.height);
     const ctx = canvas.getContext('2d');
     ctx.drawImage(backgroundImage, 0, 0);
-    ctx.font = 'bold 30px Arial';
+    ctx.font = 'bold 30px sans-serif';
     ctx.fillStyle = 'white';
     ctx.textAlign = 'center';
   
