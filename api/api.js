@@ -3,6 +3,8 @@ const { ethers } = require('ethers');
 const { WebSocketProvider } = require('ethers/providers');
 const path = require('path');
 const bcimage = path.resolve(__dirname, '../public/bc.png');
+const { Readable } = require('stream');
+
 registerFont(path.join(__dirname, '../public/Lato-Black.ttf'), { family: 'Lato' });
 
 
@@ -59,9 +61,17 @@ export default async (req, res) => {
 
   async function uploadToPinata(buffer, fileName) {
     try {
-      const result = await pinata.pinFileToIPFS(buffer, {
+      // Create a readable stream from the buffer
+      const stream = new Readable();
+      stream.push(buffer);
+      stream.push(null);
+  
+      const result = await pinata.pinFileToIPFS(stream, {
         pinataMetadata: {
           name: fileName
+        },
+        pinataOptions: {
+          cidVersion: 0
         }
       });
       console.log("File uploaded to IPFS");
