@@ -6,6 +6,9 @@ const bcimage = path.resolve(__dirname, '../public/bc.png');
 registerFont(path.join(__dirname, '../public/Lato-Black.ttf'), { family: 'Lato' });
 
 
+const pinataSDK = require('@pinata/sdk');
+const pinata = new pinataSDK({ pinataApiKey: process.env.PINATA_API_KEY, pinataSecretApiKey: process.env.PINATA_SECRET_API_KEY });
+
 
 const cloudinary = require('cloudinary').v2;
 cloudinary.config({
@@ -53,6 +56,21 @@ export default async (req, res) => {
   }
   */
   console.log("cc");
+
+  async function uploadToPinata(buffer, fileName) {
+    try {
+      const result = await pinata.pinFileToIPFS(buffer, {
+        pinataMetadata: {
+          name: fileName
+        }
+      });
+      console.log("File uploaded to IPFS");
+      return `https://gateway.pinata.cloud/ipfs/${result.IpfsHash}`;
+    } catch (error) {
+      console.error("Error uploading to IPFS:", error);
+      throw error;
+    }
+  }
 
   const generateResponseJson = (domainName, imageUrl, res) => {
     const response = {
@@ -122,9 +140,14 @@ export default async (req, res) => {
       );
       uploadStream.end(outputBuffer);
     });
+
+    const ipfsUrl = await uploadToPinata(outputBuffer, fileName);
+    console.log("Image uploaded to IPFS:", ipfsUrl);
   
     console.log("Generating response...");
-    generateResponseJson(domainName, result.secure_url, res);
+    //generateResponseJson(domainName, result.secure_url, res);
+    generateResponseJson(domainName, ipfsUrl, res);
+
   } catch (error) {
     console.error("Error:", error);
     res.status(500).json({ error: 'Internal Server Error' });
