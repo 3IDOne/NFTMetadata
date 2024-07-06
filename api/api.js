@@ -75,7 +75,7 @@ export default async (req, res) => {
         }
       });
       console.log("File uploaded to IPFS");
-      return `https://gateway.pinata.cloud/ipfs/${result.IpfsHash}`;
+      return `https://ipfs.io/ipfs/${result.IpfsHash}`;
     } catch (error) {
       console.error("Error uploading to IPFS:", error);
       throw error;
